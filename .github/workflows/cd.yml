@@ -26,7 +26,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  IMAGE: ghcr.io/martinacousido/snippet-ui
+  IMAGE: ghcr.io/ingdesis/snippet-ui
 
 jobs:
   publicar-imagen:

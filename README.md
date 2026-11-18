@@ -50,9 +50,9 @@ La UI le pide todo a `BACKEND_URL`, que por defecto es `/api`, relativa a la pá
 
 - En local, el proxy es el de Vite (`server.proxy` en `vite.config.ts`). Funciona solo con `npm run dev`.
 - Para usar otras direcciones, se definen `SNIPPET_SERVICE_URL` y `PERMISSION_SERVICE_URL` en un `.env` (no se commitea).
-- En la VM, el proxy es nginx (ver el README de [SnippetSearcher-infra](https://github.com/MartinaCousido/SnippetSearcher-infra#reverse-proxy)).
+- En la VM, el proxy es nginx (ver el README de [SnippetSearcher-infra](https://github.com/ingdesis/SnippetSearcher-infra#reverse-proxy)).
 
-El contrato completo está en [Contrato con la UI](https://github.com/MartinaCousido/SnippetSearcher#contrato-con-la-ui) de SnippetSearcher.
+El contrato completo está en [Contrato con la UI](https://github.com/ingdesis/SnippetSearcher#contrato-con-la-ui) de SnippetSearcher.
 
 ## Build production version
 
@@ -80,7 +80,7 @@ docker run --rm -p 5173:80 snippet-ui   # http://localhost:5173
 
 En esa prueba, la UI no llega al backend: el proxy de `/api` es el de Vite, que solo existe con `npm run dev`.
 
-En la VM, el `proxy` del stack le pasa `/` al servicio `ui` (ver [Reverse proxy](https://github.com/MartinaCousido/SnippetSearcher-infra#reverse-proxy) en el repo de infra).
+En la VM, el `proxy` del stack le pasa `/` al servicio `ui` (ver [Reverse proxy](https://github.com/ingdesis/SnippetSearcher-infra#reverse-proxy) en el repo de infra).
 
 ### Ramas y deploy
 
@@ -94,7 +94,7 @@ Este repo usa `master` en lugar de `dev`:
 ```
 
 - Cada tarea va en su propia rama, creada desde `master`, y entra con un PR (squash). Lo probado pasa a `main` con un PR `master` → `main` (merge commit).
-- En cada push a `master` o `main`, `.github/workflows/cd.yml` publica la imagen en GHCR como `ghcr.io/martinacousido/snippet-ui`, con el tag del ambiente (`dev` o `prod`) y el del commit (`sha-…`). Después entra por SSH a la VM y corre `docker service update` solo de `ui`.
+- En cada push a `master` o `main`, `.github/workflows/cd.yml` publica la imagen en GHCR como `ghcr.io/ingdesis/snippet-ui`, con el tag del ambiente (`dev` o `prod`) y el del commit (`sha-…`). Después entra por SSH a la VM y corre `docker service update` solo de `ui`.
 - Usa los secrets `VM_HOST`, `VM_USER` y `VM_SSH_KEY` de los *Environments* `dev` (solo `master`) y `prod` (solo `main`). La VM tiene que estar prendida.
 - `master` y `main` están protegidas igual que en los otros repos: PR obligatorio y el check `build` en verde para mergear.
 
@@ -102,7 +102,7 @@ Este repo usa `master` en lugar de `dev`:
 
 Los tests de la cátedra (`cypress/e2e/`) usan la página como lo haría un usuario. Inician sesión en la página real de Auth0, con un usuario de prueba, y corren contra el sistema levantado en local.
 
-1. **Backend:** levantar el sistema completo desde SnippetSearcher (`docker compose -f docker-compose.sistema.yml --env-file .env --env-file ../SnippetPrintScript/.env up --build`, ver [Cómo levantarlo](https://github.com/MartinaCousido/SnippetSearcher#cómo-levantarlo)).
+1. **Backend:** levantar el sistema completo desde SnippetSearcher (`docker compose -f docker-compose.sistema.yml --env-file .env --env-file ../SnippetPrintScript/.env up --build`, ver [Cómo levantarlo](https://github.com/ingdesis/SnippetSearcher#cómo-levantarlo)).
 2. **Variables:** en el `.env` de este repo (ver [`.env.example`](.env.example)), además de las de Auth0:
 
    | Variable | Valor |
@@ -126,7 +126,7 @@ Los tests dejan snippets creados en la base de `ana`. "Renders the first snippet
 
 ## Auth0 (Snippet Searcher)
 
-La UI pide iniciar sesión con Auth0 y manda el token del usuario en cada pedido al backend. Las decisiones están en **Auth0** y **Roles y permisos** de [Decisiones técnicas](https://github.com/MartinaCousido/SnippetSearcher#decisiones-técnicas), y los recursos de Auth0 se crean en [SnippetSearcher-infra](https://github.com/MartinaCousido/SnippetSearcher-infra#auth0).
+La UI pide iniciar sesión con Auth0 y manda el token del usuario en cada pedido al backend. Las decisiones están en **Auth0** y **Roles y permisos** de [Decisiones técnicas](https://github.com/ingdesis/SnippetSearcher#decisiones-técnicas), y los recursos de Auth0 se crean en [SnippetSearcher-infra](https://github.com/ingdesis/SnippetSearcher-infra#auth0).
 
 - **Sin sesión**, cualquier página lleva al login de Auth0 (`withAuthenticationRequired` en [`App.tsx`](src/App.tsx)).
 - **El token** es para nuestra API (`audience` = `https://snippetsearcher-api`) y pide `read:snippets write:snippets` ([`main.tsx`](src/main.tsx)). `ApiSnippetOperations` lo agrega a cada pedido como `Authorization: Bearer …`.
