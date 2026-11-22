@@ -28,3 +28,5 @@ dist-ssr
 !.env.example
 next-env.d.ts
 .next
+# Capturas que guarda Cypress cuando falla un test
+cypress/screenshots/
