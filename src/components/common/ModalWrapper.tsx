@@ -19,7 +19,9 @@ export const ModalWrapper = ({open, onClose,children}: { open: boolean, onClose:
           flexDirection: 'column',
           gap: '16px',
           // Si el contenido no entra en la pantalla, el modal tiene scroll: así
-          // siempre se llega al botón de guardar, que está arriba.
+          // se llega a todos sus botones. border-box hace que el 90vh incluya
+          // el padding.
+          boxSizing: 'border-box',
           maxHeight: '90vh',
           overflowY: 'auto'
         }}>
