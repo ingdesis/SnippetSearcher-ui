@@ -30,7 +30,8 @@ describe('Home', () => {
 
     first10Snippets.should('have.length.greaterThan', 0)
 
-    first10Snippets.should('have.length.lessThan', 10)
+    // La primera página muestra hasta 10 snippets (page_size=10): 10 también vale.
+    first10Snippets.should('have.length.at.most', 10)
   })
 
   it('Can creat snippet find snippets by name', () => {
